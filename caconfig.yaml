@@ -1,0 +1,9 @@
+---
+url: http://localhost:7054
+skipTLSValidation: true
+mspId: mediator
+crypto:
+  family: ecdsa
+  algorithm: P256-SHA256
+  hash: SHA2-256
+filepath: 

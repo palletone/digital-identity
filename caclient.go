@@ -19,3 +19,38 @@
  */
 
 package digital_identity
+
+import (
+	"crypto/x509"
+	"net/http"
+)
+
+type FabricCAClient struct {
+	// Uri is access point for palletone-ca server. Port number and scheme must be provided.
+	// for example http://127.0.0.1:7054
+	Url string
+	// SkipTLSVerification define how connection must handle invalid TLC certificates.
+	// if true, all verifications are skipped. This value is overwritten by Transport property, if provided
+	SkipTLSVerification bool
+	// Crypto is CryptSuite implementation used to sign request for palletone-ca server
+	Crypto CryptoSuite
+	// Transport define transport rules for communication with palletone-ca server. If nil, default Go setting will be used
+	// It is responsibility of the user to provide proper TLS/certificate setting in TLS communication.
+	Transport *http.Transport
+	// MspId value will be added to Identity in Enrollment and ReEnrollment invocations.
+	// This value is not used anywhere in CA implementation, but is need in every call to palletone and is added here
+	// for convenience, because (in general case) palletoneCA is serving one MSP
+	// User can overwrite this value at any time.
+	MspId string
+
+	FilePath string
+
+	ServerInfo ServerInfo
+}
+
+var CA *FabricCAClient
+
+type ServerInfo struct {
+	CAName string
+	CACert *x509.Certificate
+}
