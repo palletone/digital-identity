@@ -19,15 +19,13 @@
  */
 package digital_identity
 
-import (
-	"crypto/x509"
-)
 
-type Identity struct {
-	Certificate *x509.Certificate
-	PrivateKey  interface{}
-	MspId       string
+func InitCASDK(configPth string, configFile string) error {
+	//caconfigFilePath := path.Join(configPth, configFile)
+	//_, err := NewCAClient(caconfigFilePath, nil)
+	//if err != nil {
+	//	return err
+	//}
+	return nil
 }
-
-var ID *Identity
 
