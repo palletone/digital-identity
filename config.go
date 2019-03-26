@@ -21,9 +21,9 @@ package digital_identity
 
 import (
 	"fmt"
+	"github.com/gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
-	ym "gopkg.in/yaml.v2"
 )
 
 type CAConfig struct {
@@ -46,7 +46,7 @@ func NewCAConfig(path string) (*CAConfig, error) {
 		return nil, err
 	}
 	config := new(CAConfig)
-	err = ym.Unmarshal([]byte(data), config)
+	err = yaml.Unmarshal([]byte(data), config)
 	if err != nil {
 		return nil, err
 	}

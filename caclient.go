@@ -21,9 +21,10 @@
 package digital_identity
 
 import (
+	"cloudflare/cfssl/csr"
 	"crypto/x509"
 	"encoding/pem"
-	"github.com/cloudflare/cfssl/csr"
+
 	"net/http"
 )
 
@@ -151,7 +152,7 @@ type CaEnrollmentRequest struct {
 
 type CSRInfo struct {
 	CN           string           `json:"CN"`
-	Names        []csr.Name       `json:"names,omitempty"`
+	Names        []csr.Name      `json:"names,omitempty"`
 	Hosts        []string         `json:"hosts,omitempty"`
 	KeyRequest   *BasicKeyRequest `json:"key,omitempty"`
 	CA           *csr.CAConfig    `json:"ca,omitempty"`
