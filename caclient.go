@@ -28,7 +28,7 @@ import (
 	"net/http"
 )
 
-type FabricCAClient struct {
+type PalletCAClient struct {
 	// Uri is access point for palletone-ca server. Port number and scheme must be provided.
 	// for example http://127.0.0.1:7054
 	Url string
@@ -51,7 +51,7 @@ type FabricCAClient struct {
 	ServerInfo ServerInfo
 }
 
-var CA *FabricCAClient
+var CA *PalletCAClient
 
 type ServerInfo struct {
 	CAName string

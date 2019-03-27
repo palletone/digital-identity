@@ -29,33 +29,33 @@ func InitCASDK(configPth string, configFile string) error {
 	return nil
 }
 //todo sdk for caclient
-func Enroll(ca *FabricCAClient, req CaEnrollmentRequest) (*Identity, []byte, error) {
+func Enroll(ca *PalletCAClient, req CaEnrollmentRequest) (*Identity, []byte, error) {
 	return nil, nil, nil
 }
 
-func Register(ca *FabricCAClient, identity *Identity, req *CARegistrationRequest) error {
+func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest) error {
 
 
 	return nil
 }
 
-func getCaCerts(ca *FabricCAClient) (*CAGetCertResponse, error) {
+func getCaCerts(ca *PalletCAClient) (*CAGetCertResponse, error) {
 
 	return nil, nil
 }
 
-func Revoke(ca *FabricCAClient, identity *Identity, req *CARevocationRequest) error {
+func Revoke(ca *PalletCAClient, identity *Identity, req *CARevocationRequest) error {
 
 	return nil
 }
 
-func GetIndentity(ca *FabricCAClient, identity *Identity, id string, caName string) (CAGetIdentityResponse, error) {
+func GetIndentity(ca *PalletCAClient, identity *Identity, id string, caName string) (CAGetIdentityResponse, error) {
 
 
 	return CAGetIdentityResponse{}, nil
 }
 
-func GetIndentities(ca *FabricCAClient, identity *Identity) (CAListAllIdentitesResponse, error) {
+func GetIndentities(ca *PalletCAClient, identity *Identity) (CAListAllIdentitesResponse, error) {
 
 
 	return CAListAllIdentitesResponse{}, nil
