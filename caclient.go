@@ -24,6 +24,7 @@ import (
 	"cloudflare/cfssl/csr"
 	"crypto/x509"
 	"encoding/pem"
+	"fmt"
 
 	"net/http"
 )
@@ -254,4 +255,42 @@ type CAListAllIdentitesResponse struct {
 type caListAllIdentities struct {
 	caResponse
 	Result CAListAllIdentitesResponse `json:"result"`
+}
+
+func NewCAClient(path string, transport *http.Transport) (*PalletCAClient, error) {
+	config, err := NewCAConfig(path)
+	if err != nil {
+		return nil, err
+	}
+	return NewCaClientFromConfig(*config, transport)
+}
+
+func concatErrors(errs []caResponseErr) error {
+	errors := ""
+	for _, e := range errs {
+		errors += e.Message + ":"
+	}
+	return fmt.Errorf(errors)
+}
+
+func NewCaClientFromConfig(config CAConfig, transport *http.Transport) (*PalletCAClient, error) {
+	var crypto CryptoSuite
+	var err error
+
+	switch config.CryptoConfig.Family {
+	case "ecdsa":
+		crypto, err = NewECCryptoSuiteFromConfig(config.CryptoConfig)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, ErrInvalidAlgorithmFamily
+	}
+	CA = &PalletCAClient{SkipTLSVerification: config.SkipTLSValidation,
+		Url:       config.Url,
+		Crypto:    crypto,
+		Transport: transport,
+		MspId:     config.MspId,
+		FilePath:  config.FilePath}
+	return CA, nil
 }
