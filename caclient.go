@@ -22,7 +22,6 @@ package digital_identity
 
 import (
 	"bytes"
-	"cloudflare/cfssl/csr"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
@@ -32,6 +31,8 @@ import (
 	"net/url"
 
 	"net/http"
+	"crypto/tls"
+	
 )
 
 type PalletCAClient struct {
