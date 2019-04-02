@@ -105,3 +105,11 @@ func GetIndentities(ca *PalletCAClient, identity *Identity) (CAListAllIdentitesR
 
 	return *resp, nil
 }
+
+func GetCertificateChain(ca *PalletCAClient, identity *Identity,caName string) (CAGetCertResponse,error) {
+	resp, err := ca.GetCaCertificateChain(caName)
+	if err != nil {
+		return CAGetCertResponse{},err
+	}
+	return *resp,nil
+}

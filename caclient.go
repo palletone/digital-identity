@@ -29,10 +29,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/url"
-    "cloudflare/cfssl/csr"
+
 	"net/http"
 	"crypto/tls"
-
+	"github.com/cloudflare/cfssl/csr"
 )
 
 type PalletCAClient struct {
@@ -56,6 +56,7 @@ type PalletCAClient struct {
 	FilePath string
 
 	ServerInfo ServerInfo
+
 }
 
 var CA *PalletCAClient
@@ -292,11 +293,11 @@ func NewCaClientFromConfig(config CAConfig, transport *http.Transport) (*PalletC
 		return nil, ErrInvalidAlgorithmFamily
 	}
 	CA = &PalletCAClient{SkipTLSVerification: config.SkipTLSValidation,
-		Url:       config.Url,
-		Crypto:    crypto,
+		Url: config.Url,
+		Crypto: crypto,
 		Transport: transport,
-		MspId:     config.MspId,
-		FilePath:  config.FilePath}
+		MspId: config.MspId,
+		FilePath: config.FilePath}
 	return CA, nil
 }
 
@@ -364,7 +365,6 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest) (*Identity, []byte,
 		cacert, err := x509.ParseCertificate(cablock.Bytes)
 		f.ServerInfo.CAName = enrResp.Result.ServerInfo.CAName
 		f.ServerInfo.CACert = cacert
-
 
 		rawCert, err := base64.StdEncoding.DecodeString(enrResp.Result.Cert)
 		if err != nil {

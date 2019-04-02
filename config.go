@@ -32,6 +32,8 @@ type CAConfig struct {
 	SkipTLSValidation bool   `yaml:"skipTLSValidation"`
 	MspId             string `yaml:"mspId"`
 	FilePath          string `yaml:"filepath"`
+	Admin             string `yaml:"admin"`
+	Adminpw           string `yaml:"adminpw"`
 }
 
 type CryptoConfig struct {
