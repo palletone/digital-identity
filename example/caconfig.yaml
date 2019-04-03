@@ -1,7 +1,7 @@
 ---
-url: http://localhost:7054
+url: http://localhost:7064
 skipTLSValidation: true
-mspId: mediator
+mspId: immediateca
 crypto:
   family: ecdsa
   algorithm: P256-SHA256

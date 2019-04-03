@@ -45,13 +45,13 @@ func enrollAdmin() error {
 func enrolluser() error {
 	enrollAdmin()
 	attr := []digital_identity.CaRegisterAttribute{{
-		Name: "zz",
-		Value: "true",
+		Name: "zzz",
+		Value: "Hello palletone",
 		ECert: true,
 	},
 	}
 	rr := digital_identity.CARegistrationRequest{
-		EnrolmentId: "01",
+		EnrolmentId: "02",
 		Affiliation: "gptn.mediator1",
 		Type: "user",
 		Attrs: attr,
@@ -106,6 +106,7 @@ func getCaCertificateChain(caName string)(digital_identity.CAGetCertResponse,err
 	}
 	return certChain,nil
 }
+
 func main()  {
 
 	//err := enrollAdmin()
@@ -113,17 +114,21 @@ func main()  {
 	//	fmt.Println(err)
 	//}
 
-	//err = enrolluser()
+	//err := enrolluser()
 	//if err != nil {
 	//	fmt.Println(err)
 	//}
 
-	idresps := getIndentity("01","palletone")
-	fmt.Println(idresps)
+	//idresps := getIndentity("02","")
+	//fmt.Println(idresps)
 
-	//certChain,err  := getCaCertificateChain("palletone")
+	//err := revoke("02","aacompromise")
 	//if err != nil {
 	//	fmt.Println(err)
 	//}
-	//fmt.Println(certChain.IntermediateCertificates)
+	certChain,err  := getCaCertificateChain("ca1")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(certChain)
 }

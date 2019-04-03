@@ -20,8 +20,7 @@
 package digital_identity
 
 import (
-	"cloudflare/cfssl/csr"
-	"cloudflare/cfssl/scan/crypto/sha256"
+	"github.com/cloudflare/cfssl/csr"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
@@ -36,6 +35,7 @@ import (
 	"net"
 	"net/mail"
 	"os"
+	"crypto/sha256"
 )
 
 // CryptSuite defines common interface for different crypto implementations.
