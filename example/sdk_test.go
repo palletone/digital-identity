@@ -22,7 +22,6 @@ package main
 
 import (
 	"testing"
-	"fmt"
 )
 
 func TestEnrollAdmin(t *testing.T) {
@@ -35,30 +34,30 @@ func TestEnrollAdmin(t *testing.T) {
 func TestEnrolluser(t *testing.T) {
 	err := Enrolluser()
 	if err != nil {
-		fmt.Println(err)
+		t.Log(err)
 	}
 }
 
 func TestRevoke(t *testing.T) {
 	err := Revoke("01","aacompromise")
 	if err != nil {
-		fmt.Println(err)
+		t.Log(err)
 	}
 }
 func TestGetIndentity(t *testing.T) {
 	idresp := GetIndentity("05","")
-	fmt.Println(idresp)
+	t.Log(idresp)
 }
 
 func TestGetIndentities(t *testing.T) {
 	idresps := GetIndentities()
-	fmt.Println(idresps)
+	t.Log(idresps)
 }
 
 func TestGetCaCertificateChain(t *testing.T) {
 	certChain,err  := GetCaCertificateChain("ca1")
 	if err != nil {
-		fmt.Println(err)
+		t.Log(err)
 	}
-	fmt.Println(certChain)
+	t.Log(certChain)
 }

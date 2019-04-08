@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d0727898-393f-44e5-92ab-bf1e95a88d2b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/example/testinterface.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/sdk_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/example/sdk_test.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="caclient.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="caclient.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/caclient.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7840">
-              <caret line="405" column="19" selection-start-line="405" selection-start-column="19" selection-end-line="405" selection-end-column="19" />
+            <state relative-caret-position="440">
+              <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -40,7 +40,7 @@
       <file leaf-file-name="sdk.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sdk.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2160">
+            <state relative-caret-position="458">
               <caret line="108" column="24" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="24" />
             </state>
           </provider>
@@ -49,7 +49,7 @@
       <file leaf-file-name="config.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1200">
+            <state relative-caret-position="1218">
               <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
               <folding>
                 <element signature="e#831#898#0" expanded="true" />
@@ -70,8 +70,8 @@
       <file leaf-file-name="identity.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/identity.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="160" column="5" lean-forward="true" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
+            <state relative-caret-position="3040">
+              <caret line="160" column="5" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
               <folding>
                 <element signature="e#831#934#0" expanded="true" />
               </folding>
@@ -88,14 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testinterface.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="testinterface.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/testinterface.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="106" column="1" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="1" />
-              <folding>
-                <element signature="e#820#879#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="272">
+              <caret line="40" column="14" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -103,8 +100,8 @@
       <file leaf-file-name="sdk_test.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/sdk_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="55" column="1" lean-forward="true" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
+            <state relative-caret-position="1100">
+              <caret line="60" column="5" lean-forward="true" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
               <folding>
                 <element signature="e#820#848#0" expanded="true" />
               </folding>
@@ -151,8 +148,9 @@
         <option value="$PROJECT_DIR$/caclient.go" />
         <option value="$PROJECT_DIR$/identity.go" />
         <option value="$PROJECT_DIR$/example/main_test.go" />
-        <option value="$PROJECT_DIR$/example/sdk_test.go" />
         <option value="$PROJECT_DIR$/example/main.go" />
+        <option value="$PROJECT_DIR$/example/testinterface.go" />
+        <option value="$PROJECT_DIR$/example/sdk_test.go" />
       </list>
     </option>
   </component>
@@ -176,7 +174,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -193,6 +190,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -226,7 +224,40 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Test.TestGetCaCertificateChain in github.com/palletone/digital-identity/example">
+    <configuration name="TestEnrolluser in github.com/palletone/digital-identity/example" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="digital-identity" />
+      <working_directory value="$PROJECT_DIR$/example" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/palletone/digital-identity/example" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestEnrolluser$" />
+    </configuration>
+    <configuration name="TestGetCaCertificateChain in github.com/palletone/digital-identity/example" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="digital-identity" />
+      <working_directory value="$PROJECT_DIR$/example" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/palletone/digital-identity/example" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestGetCaCertificateChain$" />
+    </configuration>
+    <configuration name="TestGetIndentities in github.com/palletone/digital-identity/example" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="digital-identity" />
+      <working_directory value="$PROJECT_DIR$/example" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/palletone/digital-identity/example" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestGetIndentities$" />
+    </configuration>
     <configuration name="TestGetIndentity in github.com/palletone/digital-identity/example" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="digital-identity" />
       <working_directory value="$PROJECT_DIR$/example" />
@@ -238,22 +269,49 @@
       <filePath value="$PROJECT_DIR$/" />
       <pattern value="^TestGetIndentity$" />
     </configuration>
+    <list>
+      <item itemvalue="Go Test.TestGetIndentity in github.com/palletone/digital-identity/example" />
+      <item itemvalue="Go Test.TestGetIndentities in github.com/palletone/digital-identity/example" />
+      <item itemvalue="Go Test.TestEnrolluser in github.com/palletone/digital-identity/example" />
+      <item itemvalue="Go Test.TestGetCaCertificateChain in github.com/palletone/digital-identity/example" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestGetCaCertificateChain in github.com/palletone/digital-identity/example" />
         <item itemvalue="Go Test.TestGetIndentity in github.com/palletone/digital-identity/example" />
+        <item itemvalue="Go Test.TestEnrolluser in github.com/palletone/digital-identity/example" />
+        <item itemvalue="Go Test.TestGetIndentities in github.com/palletone/digital-identity/example" />
       </list>
     </recent_temporary>
   </component>
+  <component name="TestHistory">
+    <history-entry file="TestGetIndentity_in_github_com_palletone_digital-identity_example - 2019.04.08 at 14h 28m 11s.xml">
+      <configuration name="TestGetIndentity in github.com/palletone/digital-identity/example" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestGetIndentities_in_github_com_palletone_digital-identity_example - 2019.04.08 at 14h 31m 45s.xml">
+      <configuration name="TestGetIndentities in github.com/palletone/digital-identity/example" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestEnrolluser_in_github_com_palletone_digital-identity_example - 2019.04.08 at 14h 33m 17s.xml">
+      <configuration name="TestEnrolluser in github.com/palletone/digital-identity/example" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestGetIndentity_in_github_com_palletone_digital-identity_example - 2019.04.08 at 14h 33m 28s.xml">
+      <configuration name="TestGetIndentity in github.com/palletone/digital-identity/example" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestGetCaCertificateChain_in_github_com_palletone_digital-identity_example - 2019.04.08 at 14h 33m 53s.xml">
+      <configuration name="TestGetCaCertificateChain in github.com/palletone/digital-identity/example" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="2489" height="902" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10093993" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10175725" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" weight="0.3298887" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.328877" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.328877" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.35160428" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -275,6 +333,64 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1300">
+          <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
+          <folding>
+            <element signature="e#831#898#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/caconfig.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identity.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3040">
+          <caret line="160" column="5" lean-forward="true" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
+          <folding>
+            <element signature="e#831#934#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/errors.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/sdk_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+          <folding>
+            <element signature="e#820#848#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crypto.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/testinterface.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="700">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/caclient.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7840">
@@ -317,9 +433,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="980">
           <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="23" />
-          <folding>
-            <element signature="e#820#879#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -385,9 +498,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="980">
           <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="24" />
-          <folding>
-            <element signature="e#820#879#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -416,9 +526,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="440">
           <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#820#879#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -525,16 +632,6 @@
     </entry>
     <entry file="file://C:/Go/src/crypto/x509/pkix/pkix.go" />
     <entry file="file://C:/Go/src/crypto/x509/x509.go" />
-    <entry file="file://$PROJECT_DIR$/config.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1200">
-          <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
-          <folding>
-            <element signature="e#831#898#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/errors.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="620">
@@ -549,26 +646,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sdk.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2160">
-          <caret line="108" column="24" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/caclient.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7840">
-          <caret line="405" column="19" selection-start-line="405" selection-start-column="19" selection-end-line="405" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identity.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="160" column="5" lean-forward="true" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
+        <state relative-caret-position="3040">
+          <caret line="160" column="5" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
           <folding>
             <element signature="e#831#934#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/main_test.go" />
+    <entry file="file://$PROJECT_DIR$/example/testinterface.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="40" column="14" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/sdk_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1100">
+          <caret line="60" column="5" lean-forward="true" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
+          <folding>
+            <element signature="e#820#848#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -580,30 +681,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/main_test.go">
+    <entry file="file://$PROJECT_DIR$/config.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/sdk_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="55" column="1" lean-forward="true" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
+        <state relative-caret-position="1218">
+          <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
           <folding>
-            <element signature="e#820#848#0" expanded="true" />
+            <element signature="e#831#898#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/testinterface.go">
+    <entry file="file://$PROJECT_DIR$/sdk.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="106" column="1" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="1" />
-          <folding>
-            <element signature="e#820#879#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="458">
+          <caret line="108" column="24" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/caclient.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
         </state>
       </provider>
     </entry>
