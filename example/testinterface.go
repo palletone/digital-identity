@@ -23,10 +23,9 @@ package main
 import (
 	"github.com/palletone/digital-identity"
 
-	"fmt"
 )
 
-func enrollAdmin() error {
+func EnrollAdmin() error {
 	err := digital_identity.InitCASDK("./", "caconfig.yaml")
 	if err != nil {
 		return err
@@ -42,16 +41,16 @@ func enrollAdmin() error {
 	return nil
 }
 
-func enrolluser() error {
-	enrollAdmin()
+func Enrolluser() error {
+	EnrollAdmin()
 	attr := []digital_identity.CaRegisterAttribute{{
-		Name: "zzz",
+		Name: "zt",
 		Value: "Hello palletone",
 		ECert: true,
 	},
 	}
 	rr := digital_identity.CARegistrationRequest{
-		EnrolmentId: "02",
+		EnrolmentId: "05",
 		Affiliation: "gptn.mediator1",
 		Type: "user",
 		Attrs: attr,
@@ -65,8 +64,8 @@ func enrolluser() error {
 
 }
 
-func revoke(enrollmentid ,reason string) error{
-	enrollAdmin()
+func Revoke(enrollmentid ,reason string) error{
+	EnrollAdmin()
 	req := digital_identity.CARevocationRequest{EnrollmentId:enrollmentid,Reason:reason,GenCRL:true}
 	err := digital_identity.Revoke(digital_identity.CA,digital_identity.ID,&req)
 	if err != nil {
@@ -75,8 +74,8 @@ func revoke(enrollmentid ,reason string) error{
 	return nil
 }
 
-func getIndentity(enrollmentid ,caname string) digital_identity.CAGetIdentityResponse {
-	enrollAdmin()
+func GetIndentity(enrollmentid ,caname string) digital_identity.CAGetIdentityResponse {
+	EnrollAdmin()
 	var idresp digital_identity.CAGetIdentityResponse
 	idresp,err := digital_identity.GetIndentity(digital_identity.CA,digital_identity.ID,enrollmentid,caname)
 	if err != nil {
@@ -86,8 +85,8 @@ func getIndentity(enrollmentid ,caname string) digital_identity.CAGetIdentityRes
 
 }
 
-func getIndentities() digital_identity.CAListAllIdentitesResponse {
-	enrollAdmin()
+func GetIndentities() digital_identity.CAListAllIdentitesResponse {
+	EnrollAdmin()
 	var idresps digital_identity.CAListAllIdentitesResponse
 	idresps,err := digital_identity.GetIndentities(digital_identity.CA,digital_identity.ID)
 	if err != nil {
@@ -97,38 +96,12 @@ func getIndentities() digital_identity.CAListAllIdentitesResponse {
 
 }
 
-func getCaCertificateChain(caName string)(digital_identity.CAGetCertResponse,error) {
-	enrollAdmin()
+func GetCaCertificateChain(caName string)(digital_identity.CAGetCertResponse,error) {
+	EnrollAdmin()
 	var certChain digital_identity.CAGetCertResponse
 	certChain,err := digital_identity.GetCertificateChain(digital_identity.CA,digital_identity.ID,caName)
 	if err != nil {
 		return digital_identity.CAGetCertResponse{},err
 	}
 	return certChain,nil
-}
-
-func main()  {
-
-	//err := enrollAdmin()
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-
-	//err := enrolluser()
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-
-	//idresps := getIndentity("02","")
-	//fmt.Println(idresps)
-
-	//err := revoke("02","aacompromise")
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	certChain,err  := getCaCertificateChain("ca1")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(certChain)
 }
