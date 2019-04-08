@@ -17,47 +17,18 @@
  *  * @date 2018
  *
  */
+package config
 
-package main
+import "errors"
 
-import (
-	"testing"
+var (
+	ErrInvalidAlgorithmFamily = errors.New("invalid algorithm family")
+	ErrInvalidAlgorithm       = errors.New("invalid algorithm for ECDSA")
+	ErrInvalidHash            = errors.New("invalid hash algorithm")
+	ErrInvalidKeyType         = errors.New("invalid key type is provided")
+	ErrEnrollmentIdMissing    = errors.New("enrollment id is empty")
+	ErrAffiliationMissing     = errors.New("affiliation is missing")
+	ErrTypeMissing            = errors.New("type is missing")
+	ErrCertificateEmpty       = errors.New("certificate cannot be nil")
+	ErrIdentityNameMissing    = errors.New("identity must have  name")
 )
-
-func TestEnrollAdmin(t *testing.T) {
-	err := EnrollAdmin()
-	if err != nil {
-		t.Log(err)
-	}
-}
-
-func TestEnrolluser(t *testing.T) {
-	err := Enrolluser()
-	if err != nil {
-		t.Log(err)
-	}
-}
-
-func TestRevoke(t *testing.T) {
-	err := Revoke("01","aacompromise")
-	if err != nil {
-		t.Log(err)
-	}
-}
-func TestGetIndentity(t *testing.T) {
-	idresp := GetIndentity("05","")
-	t.Log(idresp)
-}
-
-func TestGetIndentities(t *testing.T) {
-	idresps := GetIndentities()
-	t.Log(idresps)
-}
-
-func TestGetCaCertificateChain(t *testing.T) {
-	certChain,err  := GetCaCertificateChain("ca1")
-	if err != nil {
-		t.Log(err)
-	}
-	t.Log(certChain)
-}

@@ -18,7 +18,7 @@
  *
  */
 
-package digital_identity
+package client
 
 import (
 	"bytes"
@@ -33,6 +33,8 @@ import (
 	"net/http"
 	"crypto/tls"
 	"github.com/cloudflare/cfssl/csr"
+
+	"github.com/palletone/digital-identity/config"
 )
 
 type PalletCAClient struct {
@@ -57,6 +59,8 @@ type PalletCAClient struct {
 
 	ServerInfo ServerInfo
 
+	Admin   string
+	Adminpw string
 }
 
 var CA *PalletCAClient
@@ -94,6 +98,7 @@ type CaRegisterAttribute struct {
 	Value string `json:"value"`
 	// ECert define how this attribute will be included in ECert. If this value is true this attribute will be
 	// added to ECert automatically on Enrollment if no attributes are requested on Enrollment request.
+	// ECert : certificate of registration
 	ECert bool `json:"ecert,omitempty"`
 }
 
@@ -264,7 +269,7 @@ type caListAllIdentities struct {
 }
 
 func NewCAClient(path string, transport *http.Transport) (*PalletCAClient, error) {
-	config, err := NewCAConfig(path)
+	config, err := config.NewCAConfig(path)
 	if err != nil {
 		return nil, err
 	}
@@ -279,25 +284,28 @@ func concatErrors(errs []caResponseErr) error {
 	return fmt.Errorf(errors)
 }
 
-func NewCaClientFromConfig(config CAConfig, transport *http.Transport) (*PalletCAClient, error) {
-	var crypto CryptoSuite
+func NewCaClientFromConfig(conf config.CAConfig, transport *http.Transport) (*PalletCAClient, error) {
+	var crypt CryptoSuite
 	var err error
 
-	switch config.CryptoConfig.Family {
+	switch conf.CryptoConfig.Family {
 	case "ecdsa":
-		crypto, err = NewECCryptoSuiteFromConfig(config.CryptoConfig)
+		crypt, err = NewECCryptoSuiteFromConfig(conf.CryptoConfig)
 		if err != nil {
 			return nil, err
 		}
 	default:
-		return nil, ErrInvalidAlgorithmFamily
+		return nil, config.ErrInvalidAlgorithmFamily
 	}
-	CA = &PalletCAClient{SkipTLSVerification: config.SkipTLSValidation,
-		Url: config.Url,
-		Crypto: crypto,
+	CA = &PalletCAClient{SkipTLSVerification: conf.SkipTLSValidation,
+		Url: conf.Url,
+		Crypto: crypt,
 		Transport: transport,
-		MspId: config.MspId,
-		FilePath: config.FilePath}
+		MspId: conf.MspId,
+		FilePath: conf.FilePath,
+		Admin:conf.Admin,
+		Adminpw:conf.Adminpw,
+	}
 	return CA, nil
 }
 
@@ -391,16 +399,16 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest) (*Identity, []byte,
 // registering new users.
 func (f *PalletCAClient) Register(identity *Identity, req *CARegistrationRequest) (string, error) {
 	if req.EnrolmentId == "" {
-		return "", ErrEnrollmentIdMissing
+		return "", config.ErrEnrollmentIdMissing
 	}
 	if req.Affiliation == "" {
-		return "", ErrAffiliationMissing
+		return "", config.ErrAffiliationMissing
 	}
 	if req.Type == "" {
-		return "", ErrTypeMissing
+		return "", config.ErrTypeMissing
 	}
 	if identity == nil {
-		return "", ErrCertificateEmpty
+		return "", config.ErrCertificateEmpty
 	}
 	reqJson, err := json.Marshal(req)
 	if err != nil {
@@ -595,10 +603,10 @@ func (f *PalletCAClient) Revoke(identity *Identity, request *CARevocationRequest
 
 func (f *PalletCAClient) GetIndentity(identity *Identity, id string, caName string) (*CAGetIdentityResponse, error) {
 	if identity == nil {
-		return nil, ErrCertificateEmpty
+		return nil, config.ErrCertificateEmpty
 	}
 	if len(id) == 0 {
-		return nil, ErrIdentityNameMissing
+		return nil, config.ErrIdentityNameMissing
 	}
 
 	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities/%s", f.Url, id), bytes.NewBuffer(nil))
@@ -647,7 +655,7 @@ func (f *PalletCAClient) GetIndentity(identity *Identity, id string, caName stri
 // ListAllIdentities get list of all identities
 func (f *PalletCAClient) GetIdentities(identity *Identity, caName string) (*CAListAllIdentitesResponse, error) {
 	if identity == nil {
-		return nil, ErrCertificateEmpty
+		return nil, config.ErrCertificateEmpty
 	}
 
 	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities", f.Url), bytes.NewBuffer(nil))

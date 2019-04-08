@@ -17,7 +17,7 @@
  *  * @date 2018
  *
  */
-package digital_identity
+package client
 
 import "path"
 

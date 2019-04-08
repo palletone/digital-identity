@@ -17,7 +17,7 @@
  *  * @date 2018
  *
  */
-package digital_identity
+package client
 
 import (
 	"github.com/cloudflare/cfssl/csr"
@@ -36,6 +36,8 @@ import (
 	"net/mail"
 	"os"
 	"crypto/sha256"
+	"github.com/palletone/digital-identity/config"
+
 )
 
 // CryptSuite defines common interface for different crypto implementations.
@@ -81,7 +83,7 @@ func (c *ECCryptSuite) GenerateKey() (interface{}, error) {
 
 func (c *ECCryptSuite) CreateCertificateRequest(enrollmentId string, key interface{}, hosts []string) ([]byte, error) {
 	if enrollmentId == "" {
-		return nil, ErrEnrollmentIdMissing
+		return nil, config.ErrEnrollmentIdMissing
 	}
 	subj := pkix.Name{
 		CommonName: enrollmentId,
@@ -155,7 +157,7 @@ func newCfsslBasicKeyRequest(bkr *BasicKeyRequest) *csr.BasicKeyRequest {
 func (c *ECCryptSuite) Sign(msg []byte, k interface{}) ([]byte, error) {
 	key, ok := k.(*ecdsa.PrivateKey)
 	if !ok {
-		return nil, ErrInvalidKeyType
+		return nil, config.ErrInvalidKeyType
 	}
 	var h []byte
 	h = c.Hash(msg)
@@ -183,10 +185,10 @@ func (c *ECCryptSuite) Hash(data []byte) []byte {
 	return h.Sum(nil)
 }
 
-func NewECCryptoSuiteFromConfig(config CryptoConfig) (CryptoSuite, error) {
+func NewECCryptoSuiteFromConfig(conf config.CryptoConfig) (CryptoSuite, error) {
 	var suite *ECCryptSuite
 
-	switch config.Algorithm {
+	switch conf.Algorithm {
 	case "P256-SHA256":
 		suite = &ECCryptSuite{curve: elliptic.P256(), sigAlgorithm: x509.ECDSAWithSHA256}
 	case "P384-SHA384":
@@ -194,10 +196,10 @@ func NewECCryptoSuiteFromConfig(config CryptoConfig) (CryptoSuite, error) {
 	case "P521-SHA512":
 		suite = &ECCryptSuite{curve: elliptic.P521(), sigAlgorithm: x509.ECDSAWithSHA512}
 	default:
-		return nil, ErrInvalidAlgorithm
+		return nil, config.ErrInvalidAlgorithm
 	}
 
-	switch config.Hash {
+	switch conf.Hash {
 	case "SHA2-256":
 		suite.hashFunction = sha256.New
 	case "SHA2-384":
@@ -207,7 +209,7 @@ func NewECCryptoSuiteFromConfig(config CryptoConfig) (CryptoSuite, error) {
 	case "SHA3-384":
 		suite.hashFunction = sha3.New384
 	default:
-		return nil, ErrInvalidHash
+		return nil, config.ErrInvalidHash
 	}
 	return suite, nil
 }

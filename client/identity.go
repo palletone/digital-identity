@@ -17,7 +17,7 @@
  *  * @date 2018
  *
  */
-package digital_identity
+package client
 
 import (
 	"crypto/ecdsa"
@@ -27,6 +27,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"github.com/palletone/digital-identity/config"
 )
 
 type Identity struct {
@@ -41,7 +42,7 @@ func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cain
 	var mspDir string
 	var err error
 
-	is, err := IsPathExists(ca.FilePath)
+	is, err := config.IsPathExists(ca.FilePath)
 	if err != nil || !is {
 		return err
 	}
