@@ -7,5 +7,5 @@ crypto:
   algorithm: P256-SHA256
   hash: SHA2-256
 filepath: /home/zt/data
-admin: lk
-adminpw: 123
+#admin: lk
+#adminpw: 123

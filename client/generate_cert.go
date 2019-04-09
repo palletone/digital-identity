@@ -20,8 +20,6 @@
 
 package client
 
-import "github.com/palletone/digital-identity/config"
-
 type CaGenInfo struct {
 	EnrolmentId string `json:"enrolmentid"`
 	Name        string `json:"name"`
@@ -29,19 +27,21 @@ type CaGenInfo struct {
 	ECert       bool   `json:"ecert"`
 	Type        string `json:"type"`
 	Affiliation string `json:"affiliation"`
-	config.CAConfig
+
 }
 
-func NewCaGenInfo(enrolmentId string, name string, data string, ecert bool, ty string, affiliation string) *CaGenInfo {
+func NewCaGenInfo(address string, name string, data string, ecert bool, ty string, affiliation string,) *CaGenInfo {
 	return &CaGenInfo{
-		EnrolmentId: enrolmentId,
+		EnrolmentId: address,
 		Name:        name,
 		Data:        data,
 		ECert:       ecert,
 		Type:        ty,
 		Affiliation: affiliation,
+
 	}
 }
+
 
 //You must register your administrator certificate first
 func (c *CaGenInfo) EnrollAdmin() error {
@@ -60,7 +60,7 @@ func (c *CaGenInfo) EnrollAdmin() error {
 	return nil
 }
 
-func (c *CaGenInfo) Enrolluser(conf config.CAConfig) error {
+func (c *CaGenInfo) Enrolluser() error {
 	c.EnrollAdmin()
 	attr := []CaRegisterAttribute{{
 		Name:  c.Name,
