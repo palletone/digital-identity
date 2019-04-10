@@ -43,7 +43,9 @@ type CryptoConfig struct {
 }
 
 func NewCAConfig(path string) (*CAConfig, error) {
+
 	data, err := ioutil.ReadFile(path)
+
 	if err != nil {
 		return nil, err
 	}

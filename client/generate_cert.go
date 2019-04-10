@@ -45,12 +45,12 @@ func NewCaGenInfo(address string, name string, data string, ecert bool, ty strin
 
 //You must register your administrator certificate first
 func (c *CaGenInfo) EnrollAdmin() error {
-	err := InitCASDK("../config/", "caconfig.yaml")
+	cacli,err := InitCASDK("../config", "caconfig.yaml")
 	if err != nil {
 		return err
 	}
 
-	enrollRequest := CaEnrollmentRequest{EnrollmentId: "lk", Secret: "123"}
+	enrollRequest := CaEnrollmentRequest{EnrollmentId: cacli.Admin, Secret: cacli.Adminpw}
 
 	_, _, err = Enroll(CA, enrollRequest)
 	if err != nil {

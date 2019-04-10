@@ -303,7 +303,8 @@ func NewCaClientFromConfig(conf config.CAConfig, transport *http.Transport) (*Pa
 		Transport: transport,
 		MspId: conf.MspId,
 		FilePath: conf.FilePath,
-
+		Admin: conf.Admin,
+		Adminpw: conf.Adminpw,
 	}
 
 	return CA, nil

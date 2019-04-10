@@ -19,15 +19,18 @@
  */
 package client
 
-import "path"
+import (
+	"path"
+)
 
-func InitCASDK(configPth string, configFile string) error {
+func InitCASDK(configPth string, configFile string) (*PalletCAClient,error) {
 	caconfigFilePath := path.Join(configPth, configFile)
-	_, err := NewCAClient(caconfigFilePath, nil)
+
+	cacli, err := NewCAClient(caconfigFilePath, nil)
 	if err != nil {
-		return err
+		return nil,err
 	}
-	return nil
+	return cacli,nil
 }
 
 func Enroll(ca *PalletCAClient, req CaEnrollmentRequest) (*Identity, []byte, error) {
