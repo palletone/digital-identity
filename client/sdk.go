@@ -19,12 +19,10 @@
  */
 package client
 
-import (
-	"path"
-)
+import "path/filepath"
 
 func InitCASDK(configPth string, configFile string) (*PalletCAClient,error) {
-	caconfigFilePath := path.Join(configPth, configFile)
+	caconfigFilePath := filepath.Join(configPth, configFile)
 
 	cacli, err := NewCAClient(caconfigFilePath, nil)
 	if err != nil {

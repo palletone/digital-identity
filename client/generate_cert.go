@@ -20,6 +20,11 @@
 
 package client
 
+import (
+	"os"
+	"fmt"
+)
+
 type CaGenInfo struct {
 	EnrolmentId string `json:"enrolmentid"`
 	Name        string `json:"name"`
@@ -45,7 +50,10 @@ func NewCaGenInfo(address string, name string, data string, ecert bool, ty strin
 
 //You must register your administrator certificate first
 func (c *CaGenInfo) EnrollAdmin() error {
-	cacli,err := InitCASDK("../config", "caconfig.yaml")
+	gopath := os.Getenv("GOPATH")
+	path := gopath+"/src/github.com/palletone/digital-identity/config"
+	fmt.Println(path)
+	cacli,err := InitCASDK(path, "caconfig.yaml")
 	if err != nil {
 		return err
 	}
