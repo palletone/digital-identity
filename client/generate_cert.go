@@ -22,7 +22,6 @@ package client
 
 import (
 	"os"
-	"fmt"
 )
 
 type CaGenInfo struct {
@@ -52,7 +51,7 @@ func NewCaGenInfo(address string, name string, data string, ecert bool, ty strin
 func (c *CaGenInfo) EnrollAdmin() error {
 	gopath := os.Getenv("GOPATH")
 	path := gopath+"/src/github.com/palletone/digital-identity/config"
-	fmt.Println(path)
+
 	cacli,err := InitCASDK(path, "caconfig.yaml")
 	if err != nil {
 		return err
@@ -101,25 +100,25 @@ func (c *CaGenInfo) Revoke(enrollmentid, reason string) error {
 	return nil
 }
 
-func (c *CaGenInfo) GetIndentity(enrollmentid, caname string) *CAGetIdentityResponse {
+func (c *CaGenInfo) GetIndentity(enrollmentid, caname string) (*CAGetIdentityResponse,error) {
 	c.EnrollAdmin()
 	var idresp CAGetIdentityResponse
 	idresp, err := GetIndentity(CA, ID, enrollmentid, caname)
 	if err != nil {
-		return &CAGetIdentityResponse{}
+		return &CAGetIdentityResponse{},err
 	}
-	return &idresp
+	return &idresp,nil
 
 }
 
-func (c *CaGenInfo) GetIndentities() *CAListAllIdentitesResponse {
+func (c *CaGenInfo) GetIndentities() (*CAListAllIdentitesResponse,error) {
 	c.EnrollAdmin()
 	var idresps CAListAllIdentitesResponse
 	idresps, err := GetIndentities(CA, ID)
 	if err != nil {
-		return &CAListAllIdentitesResponse{}
+		return &CAListAllIdentitesResponse{},err
 	}
-	return &idresps
+	return &idresps,nil
 
 }
 
