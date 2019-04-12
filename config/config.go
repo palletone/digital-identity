@@ -21,9 +21,10 @@ package config
 
 import (
 	"fmt"
-	"github.com/gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 type CAConfig struct {
@@ -67,4 +68,3 @@ func IsPathExists(filepath string) (bool, error) {
 	}
 	return true, nil
 }
-
