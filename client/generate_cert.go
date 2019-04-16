@@ -67,7 +67,7 @@ func (c *CaGenInfo) EnrollAdmin() error {
 	return nil
 }
 
-func (c *CaGenInfo) Enrolluser() error {
+func (c *CaGenInfo) Enrolluser() ([]byte,error) {
 	c.EnrollAdmin()
 	attr := []CaRegisterAttribute{{
 		Name:  c.Name,
@@ -81,12 +81,12 @@ func (c *CaGenInfo) Enrolluser() error {
 		Type:        c.Type,
 		Attrs:       attr,
 	}
-	err := Register(CA, ID, &rr)
+	certpem,err := Register(CA, ID, &rr)
 
 	if err != nil {
-		return err
+		return nil,err
 	}
-	return nil
+	return certpem,nil
 
 }
 

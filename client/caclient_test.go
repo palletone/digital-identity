@@ -5,7 +5,7 @@ import (
 )
 
 func newCaGenInfo() *CaGenInfo {
-	cainfo := NewCaGenInfo("10", "zk", "Hi palletOne", true, "user", "gptn.mediator1",)
+	cainfo := NewCaGenInfo("21", "zk", "Hi palletOne", true, "user", "gptn.mediator1",)
 	return cainfo
 }
 func TestEnrollAdmin(t *testing.T) {
@@ -21,10 +21,11 @@ func TestEnrollAdmin(t *testing.T) {
 func TestEnrolluser(t *testing.T) {
 
 	cainfo := newCaGenInfo()
-	err := cainfo.Enrolluser()
+	certpem,err := cainfo.Enrolluser()
 	if err != nil {
 		t.Log(err)
 	}
+	t.Log(certpem)
 }
 
 func TestRevoke(t *testing.T) {
@@ -37,13 +38,19 @@ func TestRevoke(t *testing.T) {
 
 func TestGetIndentity(t *testing.T) {
 	cainfo := newCaGenInfo()
-	idresp := cainfo.GetIndentity("06", "ca1")
+	idresp,err := cainfo.GetIndentity("06", "ca1")
+	if err != nil {
+		t.Log(err)
+	}
 	t.Log(idresp)
 }
 
 func TestGetIndentities(t *testing.T) {
 	cainfo := newCaGenInfo()
-	idresps := cainfo.GetIndentities()
+	idresps,err := cainfo.GetIndentities()
+	if err != nil {
+		t.Log(err)
+	}
 	t.Log(idresps)
 }
 

@@ -45,27 +45,28 @@ func Enroll(ca *PalletCAClient, req CaEnrollmentRequest) (*Identity, []byte, err
 	return id, csr, nil
 }
 
-func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest) error {
+func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest) ([]byte,error) {
 	resp, err := ca.Register(identity, req)
 	if err != nil {
-		return err
+		return nil,err
 	}
 
 	enrollRequest := CaEnrollmentRequest{EnrollmentId: req.EnrolmentId, Secret: resp}
 	id, _, err := ca.Enroll(enrollRequest)
 	if err != nil {
-		return err
+		return nil,err
 	}
 
 	cainfo, err := getCaCerts(ca)
 	if err != nil {
-		return err
+		return nil,err
 	}
 	err = id.SaveCert(ca, &enrollRequest, cainfo)
 	if err != nil {
-		return err
+		return nil,err
 	}
-	return nil
+	pem := id.GetCertByte()
+	return pem,err
 }
 
 func getCaCerts(ca *PalletCAClient) (*CAGetCertResponse, error) {
@@ -114,3 +115,7 @@ func GetCertificateChain(ca *PalletCAClient, identity *Identity,caName string) (
 	}
 	return *resp,nil
 }
+
+//func GetPEMCert()  {
+//
+//}

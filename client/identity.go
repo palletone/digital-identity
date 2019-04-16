@@ -28,6 +28,7 @@ import (
 	"os"
 	"path"
 	"github.com/palletone/digital-identity/config"
+	"fmt"
 )
 
 type Identity struct {
@@ -246,4 +247,16 @@ func (i *Identity) SaveTLScert(ca *PalletCAClient, cainfo *CAGetCertResponse) er
 		return nil
 	}
 	return nil
+}
+
+func (i *Identity)GetCertByte() []byte {
+	fmt.Println(i.MspId)
+
+	certPem := pem.EncodeToMemory(
+		&pem.Block{
+			Type:  "CERTIFICATE",
+			Bytes: i.Certificate.Raw,
+		},
+	)
+	return certPem
 }
