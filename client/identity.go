@@ -140,20 +140,20 @@ func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cain
 }
 
 //Save crl
-func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeResult) error {
+func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeResult) ([]byte,error) {
 	var err error
 	mspfile := request.EnrollmentId + "msp"
 	mspDir := path.Join(ca.FilePath, mspfile)
 	crlPath := path.Join(mspDir, "/crls")
 	err = os.MkdirAll(crlPath, os.ModePerm)
 	if err != nil {
-		return err
+		return nil,err
 	}
 	crlFile := path.Join(crlPath, "crl.pem")
 
 	crl, err := base64.StdEncoding.DecodeString(result.CRL)
 	if err != nil {
-		return err
+		return nil,err
 	}
 	crlPem := pem.EncodeToMemory(
 		&pem.Block{
@@ -163,9 +163,9 @@ func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeR
 	)
 	err = ioutil.WriteFile(crlFile, crlPem, 0644)
 	if err != nil {
-		return err
+		return nil,err
 	}
-	return nil
+	return crlPem,nil
 }
 
 func (i *Identity) SaveTLScert(ca *PalletCAClient, cainfo *CAGetCertResponse) error {

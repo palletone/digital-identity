@@ -90,14 +90,14 @@ func (c *CaGenInfo) Enrolluser() ([]byte,error) {
 
 }
 
-func (c *CaGenInfo) Revoke(enrollmentid, reason string) error {
+func (c *CaGenInfo) Revoke(enrollmentid, reason string) ([]byte,error) {
 	c.EnrollAdmin()
 	req := CARevocationRequest{EnrollmentId: enrollmentid, Reason: reason, GenCRL: true}
-	err := Revoke(CA, ID, &req)
+	crlPem,err := Revoke(CA, ID, &req)
 	if err != nil {
-		return err
+		return nil,err
 	}
-	return nil
+	return crlPem,nil
 }
 
 func (c *CaGenInfo) GetIndentity(enrollmentid, caname string) (*CAGetIdentityResponse,error) {

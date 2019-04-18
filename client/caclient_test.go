@@ -30,10 +30,11 @@ func TestEnrolluser(t *testing.T) {
 
 func TestRevoke(t *testing.T) {
 	cainfo := newCaGenInfo()
-	err := cainfo.Revoke("07", "aacompromise")
+	crlPem,err := cainfo.Revoke("07", "aacompromise")
 	if err != nil {
 		t.Log(err)
 	}
+	t.Log(crlPem)
 }
 
 func TestGetIndentity(t *testing.T) {

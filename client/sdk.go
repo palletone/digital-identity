@@ -78,17 +78,17 @@ func getCaCerts(ca *PalletCAClient) (*CAGetCertResponse, error) {
 	return resp, nil
 }
 
-func Revoke(ca *PalletCAClient, identity *Identity, req *CARevocationRequest) error {
+func Revoke(ca *PalletCAClient, identity *Identity, req *CARevocationRequest) ([]byte,error) {
 	r, err := ca.Revoke(identity, req)
 	if err != nil {
-		return err
+		return nil,err
 	}
-	err = SaveCrl(ca, req, r)
-	if err != nil {
-		return err
+	crlPem,err := SaveCrl(ca, req, r)
+		if err != nil {
+			return nil,err
+		}
+		return crlPem,nil
 	}
-	return nil
-}
 
 func GetIndentity(ca *PalletCAClient, identity *Identity, id string, caName string) (CAGetIdentityResponse, error) {
 	resp, err := ca.GetIndentity(identity, id, caName)
