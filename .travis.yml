@@ -1,8 +1,12 @@
-os: linux
-dist: xenial
-language: 
-    - go
-go: 
-    - 1.10.8
+language: go
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      go: 1.10.x
+    - os: linux
+      dist: xenial
+      go: 1.12.x
+      env: GO111MODULE=on  
 script:
     - go test ./...
