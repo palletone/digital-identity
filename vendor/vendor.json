@@ -3,9 +3,10 @@
 	"ignore": "",
 	"package": [
 		{
-			"path": "github.com/cloudflare/cfssl",
-			"revision": "1.3.3",
-			"version": "v1.3.3"
+			"checksumSHA1": "ea9yvqBOMmxtNuGMgD+MHJxz5t0=",
+			"path": "github.com/cloudflare/cfssl/csr",
+			"revision": "2001f384ec4fea8e6e648cd89d07bda9bd7568c1",
+			"revisionTime": "2019-06-27T23:11:40Z"
 		}
 	],
 	"rootPath": "github.com/palletone/digital-identity"
