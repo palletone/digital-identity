@@ -4,8 +4,8 @@
 	"package": [
 		{
 			"path": "github.com/cloudflare/cfssl",
-			"revision": "",
-			"version": "1.3.3"
+			"revision": "1.3.3",
+			"version": "v1.3.3"
 		}
 	],
 	"rootPath": "github.com/palletone/digital-identity"
