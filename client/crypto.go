@@ -150,8 +150,8 @@ func newCertificateRequest(req *CSRInfo) *csr.CertificateRequest {
 	return &cr
 }
 
-func newCfsslBasicKeyRequest(bkr *BasicKeyRequest) *csr.BasicKeyRequest {
-	return &csr.BasicKeyRequest{A: bkr.Algo, S: bkr.Size}
+func newCfsslBasicKeyRequest(bkr *BasicKeyRequest) *csr.KeyRequest {
+	return &csr.KeyRequest{A: bkr.Algo, S: bkr.Size}
 }
 
 func (c *ECCryptSuite) Sign(msg []byte, k interface{}) ([]byte, error) {
