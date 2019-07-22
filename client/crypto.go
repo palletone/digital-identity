@@ -20,24 +20,21 @@
 package client
 
 import (
-	"github.com/cloudflare/cfssl/csr"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
+	"crypto/sha256"
 	"crypto/sha512"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/asn1"
 	"encoding/pem"
+	"github.com/palletone/digital-identity/config"
 	"golang.org/x/crypto/sha3"
 	"hash"
 	"math/big"
 	"net"
 	"net/mail"
-	"os"
-	"crypto/sha256"
-	"github.com/palletone/digital-identity/config"
-
 )
 
 // CryptSuite defines common interface for different crypto implementations.
@@ -123,35 +120,6 @@ func (c *ECCryptSuite) CreateCertificateRequest(enrollmentId string, key interfa
 	}
 	csr := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE REQUEST", Bytes: csrBytes})
 	return csr, nil
-}
-
-func newCertificateRequest(req *CSRInfo) *csr.CertificateRequest {
-	cr := csr.CertificateRequest{}
-	if req != nil && req.Names != nil {
-		cr.Names = req.Names
-	}
-	if req != nil && req.Hosts != nil {
-		cr.Hosts = req.Hosts
-	} else {
-		// Default requested hosts are local hostname
-		hostname, _ := os.Hostname()
-		if hostname != "" {
-			cr.Hosts = make([]string, 1)
-			cr.Hosts[0] = hostname
-		}
-	}
-	if req != nil && req.KeyRequest != nil {
-		cr.KeyRequest = newCfsslBasicKeyRequest(req.KeyRequest)
-	}
-	if req != nil {
-		cr.CA = req.CA
-		cr.SerialNumber = req.SerialNumber
-	}
-	return &cr
-}
-
-func newCfsslBasicKeyRequest(bkr *BasicKeyRequest) *csr.KeyRequest {
-	return &csr.KeyRequest{A: bkr.Algo, S: bkr.Size}
 }
 
 func (c *ECCryptSuite) Sign(msg []byte, k interface{}) ([]byte, error) {

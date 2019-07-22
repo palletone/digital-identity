@@ -31,8 +31,8 @@ func InitCASDK(configPth string, configFile string) (*PalletCAClient,error) {
 	return cacli,nil
 }
 
-func Enroll(ca *PalletCAClient, req CaEnrollmentRequest) (*Identity, []byte, error) {
-	id, csr, err := ca.Enroll(req)
+func Enroll(ca *PalletCAClient, req CaEnrollmentRequest,key interface{}) (*Identity, []byte, error) {
+	id, csr, err := ca.Enroll(req,key)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -45,14 +45,14 @@ func Enroll(ca *PalletCAClient, req CaEnrollmentRequest) (*Identity, []byte, err
 	return id, csr, nil
 }
 
-func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest) ([]byte,error) {
+func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest,key interface{}) ([]byte,error) {
 	resp, err := ca.Register(identity, req)
 	if err != nil {
 		return nil,err
 	}
 
 	enrollRequest := CaEnrollmentRequest{EnrollmentId: req.EnrolmentId, Secret: resp}
-	id, _, err := ca.Enroll(enrollRequest)
+	id, _, err := ca.Enroll(enrollRequest,key)
 	if err != nil {
 		return nil,err
 	}

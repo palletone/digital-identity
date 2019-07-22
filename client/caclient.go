@@ -312,12 +312,7 @@ func NewCaClientFromConfig(conf config.CAConfig, transport *http.Transport) (*Pa
 
 //Enroll execute enrollment request for registered user in FabricCA server.
 //On success new Identity with ECert and generated csr are returned.
-func (f *PalletCAClient) Enroll(request CaEnrollmentRequest) (*Identity, []byte, error) {
-	// create new cert and send it to CA for signing
-	key, err := f.Crypto.GenerateKey()
-	if err != nil {
-		return nil, nil, err
-	}
+func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*Identity, []byte, error) {
 	var hosts []string
 	if len(request.Hosts) == 0 {
 		parsedUrl, err := url.Parse(f.Url)

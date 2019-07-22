@@ -1,7 +1,8 @@
 package client
 
 //func newCaGenInfo() *CaGenInfo {
-//	cainfo := NewCaGenInfo("21", "zk", "Hi palletOne", true, "user", "gptn.mediator1",)
+//	key, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+//	cainfo := NewCaGenInfo("108", "lkk", "Hi palletOne", true, "user", "gptn.mediator1",key)
 //	return cainfo
 //}
 //func TestEnrollAdmin(t *testing.T) {
@@ -15,7 +16,6 @@ package client
 //}
 //
 //func TestEnrolluser(t *testing.T) {
-//
 //	cainfo := newCaGenInfo()
 //	certpem,err := cainfo.Enrolluser()
 //	if err != nil {
@@ -26,7 +26,7 @@ package client
 //
 //func TestRevoke(t *testing.T) {
 //	cainfo := newCaGenInfo()
-//	crlPem,err := cainfo.Revoke("07", "aacompromise")
+//	crlPem,err := cainfo.Revoke("102", "aacompromise")
 //	if err != nil {
 //		t.Log(err)
 //	}
@@ -35,7 +35,7 @@ package client
 //
 //func TestGetIndentity(t *testing.T) {
 //	cainfo := newCaGenInfo()
-//	idresp,err := cainfo.GetIndentity("06", "ca1")
+//	idresp,err := cainfo.GetIndentity("104", "")
 //	if err != nil {
 //		t.Log(err)
 //	}
@@ -53,9 +53,9 @@ package client
 //
 //func TestGetCaCertificateChain(t *testing.T) {
 //	cainfo := newCaGenInfo()
-//	certChain, err := cainfo.GetCaCertificateChain("ca1")
+//	certChain, err := cainfo.GetCaCertificateChain("")
 //	if err != nil {
 //		t.Log(err)
 //	}
-//	t.Log(certChain)
+//	t.Log(certChain.RootCertificates)
 //}
