@@ -47,27 +47,27 @@ func NewCaGenInfo(address string, name string, data string, ecert bool, ty strin
 }
 
 //You must register your administrator certificate first
-func (c *CaGenInfo) EnrollAdmin() error {
+func (c *CaGenInfo) EnrollAdmin() (*Identity, error) {
 	gopath := os.Getenv("GOPATH")
 	path := gopath + "/src/github.com/palletone/digital-identity/config"
 
 	cacli, err := InitCASDK(path, "caconfig.yaml")
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	enrollRequest := CaEnrollmentRequest{EnrollmentId: cacli.Admin, Secret: cacli.Adminpw}
 
-	_, _, err = Enroll(CA, enrollRequest,c.Key)
+	id, _, err := Enroll(CA, enrollRequest, c.Key)
 	if err != nil {
-		return err
+		return nil, err
 
 	}
-	return nil
+	return id, nil
 }
 
 func (c *CaGenInfo) Enrolluser() ([]byte, error) {
-	c.EnrollAdmin()
+	id, _ := c.EnrollAdmin()
 	attr := []CaRegisterAttribute{{
 		Name:  c.Name,
 		Value: c.Data,
@@ -80,7 +80,7 @@ func (c *CaGenInfo) Enrolluser() ([]byte, error) {
 		Type:        c.Type,
 		Attrs:       attr,
 	}
-	certpem, err := Register(CA, ID, &rr,c.Key)
+	certpem, err := Register(CA, id, &rr, c.Key)
 
 	if err != nil {
 		return nil, err
@@ -90,9 +90,9 @@ func (c *CaGenInfo) Enrolluser() ([]byte, error) {
 }
 
 func (c *CaGenInfo) Revoke(enrollmentid, reason string) ([]byte, error) {
-	c.EnrollAdmin()
+	id, _ := c.EnrollAdmin()
 	req := CARevocationRequest{EnrollmentId: enrollmentid, Reason: reason, GenCRL: true}
-	crlPem, err := Revoke(CA, ID, &req)
+	crlPem, err := Revoke(CA, id, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +100,9 @@ func (c *CaGenInfo) Revoke(enrollmentid, reason string) ([]byte, error) {
 }
 
 func (c *CaGenInfo) GetIndentity(enrollmentid, caname string) (*CAGetIdentityResponse, error) {
-	c.EnrollAdmin()
+	id, _ := c.EnrollAdmin()
 	var idresp CAGetIdentityResponse
-	idresp, err := GetIndentity(CA, ID, enrollmentid, caname)
+	idresp, err := GetIndentity(CA, id, enrollmentid, caname)
 	if err != nil {
 		return &CAGetIdentityResponse{}, err
 	}
@@ -111,9 +111,9 @@ func (c *CaGenInfo) GetIndentity(enrollmentid, caname string) (*CAGetIdentityRes
 }
 
 func (c *CaGenInfo) GetIndentities() (*CAListAllIdentitesResponse, error) {
-	c.EnrollAdmin()
+	id, _ := c.EnrollAdmin()
 	var idresps CAListAllIdentitesResponse
-	idresps, err := GetIndentities(CA, ID)
+	idresps, err := GetIndentities(CA, id)
 	if err != nil {
 		return &CAListAllIdentitesResponse{}, err
 	}
@@ -122,9 +122,9 @@ func (c *CaGenInfo) GetIndentities() (*CAListAllIdentitesResponse, error) {
 }
 
 func (c *CaGenInfo) GetCaCertificateChain(caName string) (*CAGetCertResponse, error) {
-	c.EnrollAdmin()
+	id, _ := c.EnrollAdmin()
 	var certChain CAGetCertResponse
-	certChain, err := GetCertificateChain(CA, ID, caName)
+	certChain, err := GetCertificateChain(CA, id, caName)
 	if err != nil {
 		return &CAGetCertResponse{}, err
 	}
