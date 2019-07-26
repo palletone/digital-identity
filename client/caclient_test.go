@@ -2,19 +2,19 @@ package client
 
 //func newCaGenInfo() *CaGenInfo {
 //	key, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-//	cainfo := NewCaGenInfo("108", "lkk", "Hi palletOne", true, "user", "gptn.mediator1",key)
+//	cainfo := NewCaGenInfo("02", "lkk", "Hi palletOne", true, "user", "gptn.mediator1",key)
 //	return cainfo
 //}
 //func TestEnrollAdmin(t *testing.T) {
 //	cainfo := newCaGenInfo()
 //
-//	err := cainfo.EnrollAdmin()
+//	_,err := cainfo.EnrollAdmin()
 //	if err != nil {
 //		t.Log(err)
 //	}
 //
 //}
-//
+////
 //func TestEnrolluser(t *testing.T) {
 //	cainfo := newCaGenInfo()
 //	certpem,err := cainfo.Enrolluser()

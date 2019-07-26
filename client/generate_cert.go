@@ -90,7 +90,10 @@ func (c *CaGenInfo) Enrolluser() ([]byte, error) {
 }
 
 func (c *CaGenInfo) Revoke(enrollmentid, reason string) ([]byte, error) {
-	id, _ := c.EnrollAdmin()
+	id, err := c.EnrollAdmin()
+	if err != nil {
+		return nil, err
+	}
 	req := CARevocationRequest{EnrollmentId: enrollmentid, Reason: reason, GenCRL: true}
 	crlPem, err := Revoke(CA, id, &req)
 	if err != nil {
