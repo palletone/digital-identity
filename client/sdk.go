@@ -36,11 +36,17 @@ func Enroll(ca *PalletCAClient, req CaEnrollmentRequest,key interface{}) (*Ident
 	if err != nil {
 		return nil, nil, err
 	}
-	resp, err := getCaCerts(ca)
+	resp, _ := getCaCerts(ca)
 	if req.Profile == "tls" {
-		id.SaveTLScert(ca, resp)
+		err = id.SaveTLScert(ca, resp)
+		if err != nil {
+			return nil, nil, err
+		}
 	} else {
-		id.SaveCert(ca, nil, resp)
+		err = id.SaveCert(ca, nil, resp)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 	return id, csr, nil
 }
@@ -51,7 +57,7 @@ func Register(ca *PalletCAClient, identity *Identity, req *CARegistrationRequest
 		return nil,err
 	}
 
-	enrollRequest := CaEnrollmentRequest{EnrollmentId: req.EnrolmentId, Secret: resp}
+	enrollRequest := CaEnrollmentRequest{EnrollmentID: req.EnrolmentID, Secret: resp}
 	id, _, err := ca.Enroll(enrollRequest,key)
 	if err != nil {
 		return nil,err

@@ -34,10 +34,8 @@ import (
 type Identity struct {
 	Certificate *x509.Certificate
 	PrivateKey  interface{}
-	MspId       string
+	MspID       string
 }
-
-var ID *Identity
 
 func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cainfo *CAGetCertResponse) error {
 	var mspDir string
@@ -59,7 +57,7 @@ func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cain
 	if enreq == nil {
 		mspDir = path.Join(ca.FilePath, "/msp")
 	} else {
-		mspfile := enreq.EnrollmentId + "msp"
+		mspfile := enreq.EnrollmentID + "msp"
 		mspDir = path.Join(ca.FilePath, mspfile)
 	}
 	//保存根证书
@@ -89,12 +87,18 @@ func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cain
 		caFile = path.Join(intercaPath, "intermediate-certs.pem")
 		for _, interca := range cainfo.IntermediateCertificates {
 			intercaPem := pem.EncodeToMemory(interca)
-			fd, err := os.OpenFile(caFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
-			if err != nil {
-				return err
+			fd, openErr := os.OpenFile(caFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
+			if openErr != nil {
+				return openErr
 			}
-			fd.Write(intercaPem)
-			fd.Write([]byte("\n"))
+			_, wirteErr := fd.Write(intercaPem)
+			if wirteErr != nil {
+				return wirteErr
+			}
+			_, wirteErr = fd.Write([]byte("\n"))
+			if wirteErr != nil {
+				return wirteErr
+			}
 			fd.Close()
 		}
 	}
@@ -140,20 +144,20 @@ func (i *Identity) SaveCert(ca *PalletCAClient, enreq *CaEnrollmentRequest, cain
 }
 
 //Save crl
-func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeResult) ([]byte,error) {
+func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeResult) ([]byte, error) {
 	var err error
-	mspfile := request.EnrollmentId + "msp"
+	mspfile := request.EnrollmentID + "msp"
 	mspDir := path.Join(ca.FilePath, mspfile)
 	crlPath := path.Join(mspDir, "/crls")
 	err = os.MkdirAll(crlPath, os.ModePerm)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	crlFile := path.Join(crlPath, "crl.pem")
 
 	crl, err := base64.StdEncoding.DecodeString(result.CRL)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	crlPem := pem.EncodeToMemory(
 		&pem.Block{
@@ -163,9 +167,9 @@ func SaveCrl(ca *PalletCAClient, request *CARevocationRequest, result *CARevokeR
 	)
 	err = ioutil.WriteFile(crlFile, crlPem, 0644)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	return crlPem,nil
+	return crlPem, nil
 }
 
 func (i *Identity) SaveTLScert(ca *PalletCAClient, cainfo *CAGetCertResponse) error {
@@ -190,24 +194,30 @@ func (i *Identity) SaveTLScert(ca *PalletCAClient, cainfo *CAGetCertResponse) er
 		return err
 	}
 	//保存中间证书
-	if len(cainfo.IntermediateCertificates) > 0 {
-		intercaPath := path.Join(mspDir, "/tlsintermediatecerts")
-		err = os.MkdirAll(intercaPath, os.ModePerm)
-		if err != nil {
-			return err
-		}
-		caFile = path.Join(intercaPath, "intermediate-certs.pem")
-		for _, interca := range cainfo.IntermediateCertificates {
-			interca_pem := pem.EncodeToMemory(interca)
-			fd, err := os.OpenFile(caFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
-			if err != nil {
-				return err
-			}
-			fd.Write(interca_pem)
-			fd.Write([]byte("\n"))
-			fd.Close()
-		}
-	}
+	//if len(cainfo.IntermediateCertificates) > 0 {
+	//	intercaPath := path.Join(mspDir, "/tlsintermediatecerts")
+	//	err = os.MkdirAll(intercaPath, os.ModePerm)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	caFile = path.Join(intercaPath, "intermediate-certs.pem")
+	//	for _, interca := range cainfo.IntermediateCertificates {
+	//		intercaPem := pem.EncodeToMemory(interca)
+	//		fd, openErr := os.OpenFile(caFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
+	//		if openErr != nil {
+	//			return openErr
+	//		}
+	//		_, writErr := fd.Write(intercaPem)
+	//		if writErr != nil {
+	//			return writErr
+	//		}
+	//		_, writErr = fd.Write([]byte("\n"))
+	//		if writErr != nil {
+	//			return writErr
+	//		}
+	//		fd.Close()
+	//	}
+	//}
 	//保存证书
 	certPath := path.Join(mspDir + "/signcerts")
 	err = os.MkdirAll(certPath, os.ModePerm)
@@ -249,8 +259,8 @@ func (i *Identity) SaveTLScert(ca *PalletCAClient, cainfo *CAGetCertResponse) er
 	return nil
 }
 
-func (i *Identity)GetCertByte() []byte {
-	fmt.Println(i.MspId)
+func (i *Identity) GetCertByte() []byte {
+	fmt.Println(i.MspID)
 
 	certPem := pem.EncodeToMemory(
 		&pem.Block{

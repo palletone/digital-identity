@@ -29,18 +29,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/url"
-
 	"net/http"
 	"crypto/tls"
 	"github.com/cloudflare/cfssl/csr"
-
 	"github.com/palletone/digital-identity/config"
 )
+
+var ID *Identity
+var CA *PalletCAClient
 
 type PalletCAClient struct {
 	// Uri is access point for palletone-ca server. Port number and scheme must be provided.
 	// for example http://127.0.0.1:7054
-	Url string
+	URL string
 	// SkipTLSVerification define how connection must handle invalid TLC certificates.
 	// if true, all verifications are skipped. This value is overwritten by Transport property, if provided
 	SkipTLSVerification bool
@@ -49,11 +50,11 @@ type PalletCAClient struct {
 	// Transport define transport rules for communication with palletone-ca server. If nil, default Go setting will be used
 	// It is responsibility of the user to provide proper TLS/certificate setting in TLS communication.
 	Transport *http.Transport
-	// MspId value will be added to Identity in Enrollment and ReEnrollment invocations.
+	// MspID value will be added to Identity in Enrollment and ReEnrollment invocations.
 	// This value is not used anywhere in CA implementation, but is need in every call to palletone and is added here
 	// for convenience, because (in general case) palletoneCA is serving one MSP
 	// User can overwrite this value at any time.
-	MspId string
+	MspID string
 
 	FilePath string
 
@@ -63,7 +64,7 @@ type PalletCAClient struct {
 	Adminpw string
 }
 
-var CA *PalletCAClient
+
 
 type ServerInfo struct {
 	CAName string
@@ -72,15 +73,15 @@ type ServerInfo struct {
 
 // RegistrationRequest holds all data needed for new registration of new user in Certificate Authority
 type CARegistrationRequest struct {
-	// EnrolmentId is unique name that identifies identity
-	EnrolmentId string `json:"id"`
+	// EnrolmentID is unique name that identifies identity
+	EnrolmentID string `json:"id"`
 	// Type defines type of this identity (user,client, auditor etc...)
 	Type string `json:"type"`
 	// Secret is password that will be used for enrollment. If not provided random password will be generated
 	Secert string `json:"secert,omitempty" mask:"password" help:"The enrollment secret for the identity being registered"`
 	// MaxEnrollments define maximum number of times that identity can enroll. If not provided or is 0 there is no limit
 	MaxEnrollments int `json:"max_enrollments,omitempty"`
-	// Affiliation associates identity with particular organisation.
+	// Affiliation associates identity with particular organization.
 	Affiliation string `json:"affiliation" help:"The identity's affiliation"`
 	// Attrs are attributes associated with this identity
 	Attrs []CaRegisterAttribute `json:"attrs,omitempty"`
@@ -139,7 +140,7 @@ type caResponseErr struct {
 type CaEnrollAttribute struct {
 	// Name is the name of the attribute
 	Name string `json:"name"`
-	// Optional define behaviour when required attribute is not available to user. If `true` then request will continue,
+	// Optional define behavior when required attribute is not available to user. If `true` then request will continue,
 	// but attribute will not be included in ECert. If `false` and attribute is missing, request will fail.
 	// If false and attribute is available, request will continue and attribute will be added in ECert
 	Optional bool `json:"optional,omitempty"`
@@ -147,7 +148,7 @@ type CaEnrollAttribute struct {
 
 // CaEnrollmentRequest holds data needed for getting ECert (enrollment) from CA server
 type CaEnrollmentRequest struct {
-	EnrollmentId string `json:"name" skip:"true"`
+	EnrollmentID string `json:"name" skip:"true"`
 	// Secret is the password for this identity
 	Secret  string `json:"secret,omitempty" skip:"true" mask:"password"`
 	Profile string `json:"profile,omitempty"`
@@ -215,7 +216,7 @@ type caResponseResult struct {
 }
 
 type CARevocationRequest struct {
-	EnrollmentId string `json:"id,omitempty"`
+	EnrollmentID string `json:"id,omitempty"`
 	Serial       string `json:"serial,omitempty"`
 	AKI          string `json:"aki,omitempty"`
 	Reason       string `json:"reason,omitempty"`
@@ -273,6 +274,7 @@ func NewCAClient(path string, transport *http.Transport) (*PalletCAClient, error
 	if err != nil {
 		return nil, err
 	}
+
 	return NewCaClientFromConfig(*config, transport)
 }
 
@@ -298,10 +300,10 @@ func NewCaClientFromConfig(conf config.CAConfig, transport *http.Transport) (*Pa
 		return nil, config.ErrInvalidAlgorithmFamily
 	}
 	CA = &PalletCAClient{SkipTLSVerification: conf.SkipTLSValidation,
-		Url: conf.Url,
+		URL: conf.URL,
 		Crypto: crypt,
 		Transport: transport,
-		MspId: conf.MspId,
+		MspID: conf.MspID,
 		FilePath: conf.FilePath,
 		Admin: conf.Admin,
 		Adminpw: conf.Adminpw,
@@ -312,19 +314,19 @@ func NewCaClientFromConfig(conf config.CAConfig, transport *http.Transport) (*Pa
 
 //Enroll execute enrollment request for registered user in FabricCA server.
 //On success new Identity with ECert and generated csr are returned.
-func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*Identity, []byte, error) {
+func (f *PalletCAClient) Enroll(request CaEnrollmentRequest, key interface{}) (*Identity, []byte, error) {
 	var hosts []string
 	if len(request.Hosts) == 0 {
-		parsedUrl, err := url.Parse(f.Url)
+		parsedURL, err := url.Parse(f.URL)
 		if err != nil {
 			return nil, nil, err
 		}
-		hosts = []string{parsedUrl.Host}
+		hosts = []string{parsedURL.Host}
 	} else {
 		hosts = request.Hosts
 	}
 
-	csr, err := f.Crypto.CreateCertificateRequest(request.EnrollmentId, key, hosts)
+	csr, err := f.Crypto.CreateCertificateRequest(request.EnrollmentID, key, hosts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -334,12 +336,12 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*I
 		return nil, nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/enroll", f.Url), bytes.NewBuffer(crm))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/enroll", f.URL), bytes.NewBuffer(crm))
 	if err != nil {
 		return nil, nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.SetBasicAuth(request.EnrollmentId, request.Secret)
+	req.SetBasicAuth(request.EnrollmentID, request.Secret)
 
 	httpClient := &http.Client{Transport: f.getTransport()}
 	resp, err := httpClient.Do(req)
@@ -367,6 +369,9 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*I
 		}
 		cablock, _ := pem.Decode(cabyte)
 		cacert, err := x509.ParseCertificate(cablock.Bytes)
+		if err != nil {
+			return nil, nil, err
+		}
 		f.ServerInfo.CAName = enrResp.Result.ServerInfo.CAName
 		f.ServerInfo.CACert = cacert
 
@@ -381,9 +386,9 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*I
 			return nil, nil, err
 		}
 		if ID == nil {
-			ID = &Identity{Certificate: cert, PrivateKey: key, MspId: f.MspId}
+			ID = &Identity{Certificate: cert, PrivateKey: key, MspID: f.MspID}
 		}
-		return &Identity{Certificate: cert, PrivateKey: key, MspId: f.MspId}, csr, nil
+		return &Identity{Certificate: cert, PrivateKey: key, MspID: f.MspID}, csr, nil
 	}
 	return nil, nil, fmt.Errorf("non 200 response: %v message is: %s", resp.StatusCode, string(body))
 }
@@ -394,8 +399,8 @@ func (f *PalletCAClient) Enroll(request CaEnrollmentRequest,key interface{}) (*I
 // Identity parameter is certificate for user that makes registration and this user MUST have the role for
 // registering new users.
 func (f *PalletCAClient) Register(identity *Identity, req *CARegistrationRequest) (string, error) {
-	if req.EnrolmentId == "" {
-		return "", config.ErrEnrollmentIdMissing
+	if req.EnrolmentID == "" {
+		return "", config.ErrEnrollmentIDMissing
 	}
 	if req.Affiliation == "" {
 		return "", config.ErrAffiliationMissing
@@ -406,18 +411,18 @@ func (f *PalletCAClient) Register(identity *Identity, req *CARegistrationRequest
 	if identity == nil {
 		return "", config.ErrCertificateEmpty
 	}
-	reqJson, err := json.Marshal(req)
+	reqJSON, err := json.Marshal(req)
 	if err != nil {
 		return "", err
 	}
 
-	httpReq, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/register", f.Url), bytes.NewBuffer(reqJson))
+	httpReq, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/register", f.URL), bytes.NewBuffer(reqJSON))
 	if err != nil {
 		return "", err
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	token, err := f.createAuthToken(identity, reqJson)
+	token, err := f.createAuthToken(identity, reqJSON)
 	if err != nil {
 		return "", err
 	}
@@ -453,12 +458,12 @@ func (f *PalletCAClient) Register(identity *Identity, req *CARegistrationRequest
 
 // GetCaCertificateChain gets root and intermediate certificates used by PalletoneCA server.
 func (f *PalletCAClient) GetCaCertificateChain(caName string) (*CAGetCertResponse, error) {
-	reqJson, err := json.Marshal(caInfoRequest{CaName: caName})
+	reqJSON, err := json.Marshal(caInfoRequest{CaName: caName})
 	if err != nil {
 		return nil, err
 	}
 
-	httpReq, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/cainfo", f.Url), bytes.NewBuffer(reqJson))
+	httpReq, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/cainfo", f.URL), bytes.NewBuffer(reqJSON))
 	if err != nil {
 		return nil, err
 	}
@@ -477,7 +482,7 @@ func (f *PalletCAClient) GetCaCertificateChain(caName string) (*CAGetCertRespons
 	}
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		result := new(caInfoResponse)
-		if err := json.Unmarshal(body, result); err != nil {
+		if err = json.Unmarshal(body, result); err != nil {
 			return nil, err
 		}
 		if !result.Success {
@@ -557,15 +562,12 @@ func (f *PalletCAClient) getTransport() *http.Transport {
 
 // Revoke revokes ECert
 func (f *PalletCAClient) Revoke(identity *Identity, request *CARevocationRequest) (*CARevokeResult, error) {
-	reqJson, err := json.Marshal(request)
-	if err != nil {
-		return nil, err
-	}
+	reqJSON, _ := json.Marshal(request)
 
-	httpReq, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/revoke", f.Url), bytes.NewBuffer(reqJson))
+	httpReq, _ := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/revoke", f.URL), bytes.NewBuffer(reqJSON))
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	token, err := f.createAuthToken(identity, reqJson)
+	token, err := f.createAuthToken(identity, reqJSON)
 	if err != nil {
 		return nil, err
 	}
@@ -605,7 +607,7 @@ func (f *PalletCAClient) GetIndentity(identity *Identity, id string, caName stri
 		return nil, config.ErrIdentityNameMissing
 	}
 
-	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities/%s", f.Url, id), bytes.NewBuffer(nil))
+	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities/%s", f.URL, id), bytes.NewBuffer(nil))
 	if err != nil {
 		return nil, err
 	}
@@ -654,7 +656,7 @@ func (f *PalletCAClient) GetIdentities(identity *Identity, caName string) (*CALi
 		return nil, config.ErrCertificateEmpty
 	}
 
-	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities", f.Url), bytes.NewBuffer(nil))
+	httpReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/identities", f.URL), bytes.NewBuffer(nil))
 	if err != nil {
 		return nil, err
 	}

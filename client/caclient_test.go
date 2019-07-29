@@ -2,7 +2,7 @@ package client
 
 //func newCaGenInfo() *CaGenInfo {
 //	key, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-//	cainfo := NewCaGenInfo("02", "lkk", "Hi palletOne", true, "user", "gptn.mediator1",key)
+//	cainfo := NewCaGenInfo("14", "lkk", "Hi palletOne", true, "user", "gptn.mediator1",key)
 //	return cainfo
 //}
 //func TestEnrollAdmin(t *testing.T) {

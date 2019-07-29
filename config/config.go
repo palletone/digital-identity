@@ -20,18 +20,18 @@
 package config
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
+"fmt"
+"io/ioutil"
+"os"
 
-	"gopkg.in/yaml.v2"
+"gopkg.in/yaml.v2"
 )
 
 type CAConfig struct {
-	CryptoConfig      `yaml:"crypto"`
-	Url               string `yaml:"url"`
+	CryptoConfig             `yaml:"crypto"`
+	URL               string `yaml:"url"`
 	SkipTLSValidation bool   `yaml:"skipTLSValidation"`
-	MspId             string `yaml:"mspId"`
+	MspID             string `yaml:"mspId"`
 	FilePath          string `yaml:"filepath"`
 	Admin             string `yaml:"admin"`
 	Adminpw           string `yaml:"adminpw"`
@@ -51,7 +51,7 @@ func NewCAConfig(path string) (*CAConfig, error) {
 		return nil, err
 	}
 	config := new(CAConfig)
-	err = yaml.Unmarshal([]byte(data), config)
+	err = yaml.Unmarshal(data, config)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func IsPathExists(filepath string) (bool, error) {
 		return false, err
 	}
 	if !fi.IsDir() {
-		return false, fmt.Errorf("The path: %s is not directory", filepath)
+		return false, fmt.Errorf("THE PATH: %s is not directory", filepath)
 	}
 	return true, nil
 }

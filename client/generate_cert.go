@@ -25,7 +25,7 @@ import (
 )
 
 type CaGenInfo struct {
-	EnrolmentId string `json:"enrolmentid"`
+	EnrolmentID string `json:"enrolmentid"`
 	Name        string `json:"name"`
 	Data        string `json:"data"`
 	ECert       bool   `json:"ecert"`
@@ -36,7 +36,7 @@ type CaGenInfo struct {
 
 func NewCaGenInfo(address string, name string, data string, ecert bool, ty string, affiliation string, key interface{}) *CaGenInfo {
 	return &CaGenInfo{
-		EnrolmentId: address,
+		EnrolmentID: address,
 		Name:        name,
 		Data:        data,
 		ECert:       ecert,
@@ -56,7 +56,7 @@ func (c *CaGenInfo) EnrollAdmin() (*Identity, error) {
 		return nil, err
 	}
 
-	enrollRequest := CaEnrollmentRequest{EnrollmentId: cacli.Admin, Secret: cacli.Adminpw}
+	enrollRequest := CaEnrollmentRequest{EnrollmentID: cacli.Admin, Secret: cacli.Adminpw}
 
 	id, _, err := Enroll(CA, enrollRequest, c.Key)
 	if err != nil {
@@ -75,7 +75,7 @@ func (c *CaGenInfo) Enrolluser() ([]byte, error) {
 	},
 	}
 	rr := CARegistrationRequest{
-		EnrolmentId: c.EnrolmentId,
+		EnrolmentID: c.EnrolmentID,
 		Affiliation: c.Affiliation,
 		Type:        c.Type,
 		Attrs:       attr,
@@ -94,7 +94,7 @@ func (c *CaGenInfo) Revoke(enrollmentid, reason string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	req := CARevocationRequest{EnrollmentId: enrollmentid, Reason: reason, GenCRL: true}
+	req := CARevocationRequest{EnrollmentID: enrollmentid, Reason: reason, GenCRL: true}
 	crlPem, err := Revoke(CA, id, &req)
 	if err != nil {
 		return nil, err

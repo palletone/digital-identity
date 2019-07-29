@@ -35,6 +35,7 @@ import (
 	"math/big"
 	"net"
 	"net/mail"
+	"fmt"
 )
 
 // CryptSuite defines common interface for different crypto implementations.
@@ -42,7 +43,7 @@ type CryptoSuite interface {
 	// GenerateKey returns PrivateKey.
 	GenerateKey() (interface{}, error)
 	// CreateCertificateRequest will create CSR request. It takes enrolmentId and Private key
-	CreateCertificateRequest(enrollmentId string, key interface{}, hosts []string) ([]byte, error)
+	CreateCertificateRequest(enrollmentID string, key interface{}, hosts []string) ([]byte, error)
 	// Sign signs message. It takes message to sign and Private key
 	Sign(msg []byte, k interface{}) ([]byte, error)
 	// Hash computes Hash value of provided data. Hash function will be different in different crypto implementations.
@@ -62,7 +63,7 @@ var (
 type ECCryptSuite struct {
 	curve        elliptic.Curve
 	sigAlgorithm x509.SignatureAlgorithm
-	key          *ecdsa.PrivateKey
+	//key          *ecdsa.PrivateKey
 	hashFunction func() hash.Hash
 }
 
@@ -78,12 +79,12 @@ func (c *ECCryptSuite) GenerateKey() (interface{}, error) {
 	return key, nil
 }
 
-func (c *ECCryptSuite) CreateCertificateRequest(enrollmentId string, key interface{}, hosts []string) ([]byte, error) {
-	if enrollmentId == "" {
-		return nil, config.ErrEnrollmentIdMissing
+func (c *ECCryptSuite) CreateCertificateRequest(enrollmentID string, key interface{}, hosts []string) ([]byte, error) {
+	if enrollmentID == "" {
+		return nil, config.ErrEnrollmentIDMissing
 	}
 	subj := pkix.Name{
-		CommonName: enrollmentId,
+		CommonName: enrollmentID,
 	}
 	rawSubj := subj.ToRDNSequence()
 
@@ -99,7 +100,7 @@ func (c *ECCryptSuite) CreateCertificateRequest(enrollmentId string, key interfa
 	for i := range hosts {
 		if ip := net.ParseIP(hosts[i]); ip != nil {
 			ipAddr = append(ipAddr, ip)
-		} else if email, err := mail.ParseAddress(hosts[i]); err == nil && email != nil {
+		} else if email, _ := mail.ParseAddress(hosts[i]); email != nil {
 			emailAddr = append(emailAddr, email.Address)
 		} else {
 			dnsAddr = append(dnsAddr, hosts[i])
@@ -127,8 +128,8 @@ func (c *ECCryptSuite) Sign(msg []byte, k interface{}) ([]byte, error) {
 	if !ok {
 		return nil, config.ErrInvalidKeyType
 	}
-	var h []byte
-	h = c.Hash(msg)
+
+	h := c.Hash(msg)
 	R, S, err := ecdsa.Sign(rand.Reader, key, h)
 	if err != nil {
 		return nil, err
@@ -141,15 +142,18 @@ func (c *ECCryptSuite) Sign(msg []byte, k interface{}) ([]byte, error) {
 	return sig, nil
 }
 
-func (c *ECCryptSuite) preventMalleability(k *ecdsa.PrivateKey, S *big.Int) {
+func (c *ECCryptSuite) preventMalleability(k *ecdsa.PrivateKey, s *big.Int) {
 	halfOrder := ecCurveHalfOrders[k.Curve]
-	if S.Cmp(halfOrder) == 1 {
-		S.Sub(k.Params().N, S)
+	if s.Cmp(halfOrder) == 1 {
+		s.Sub(k.Params().N, s)
 	}
 }
 func (c *ECCryptSuite) Hash(data []byte) []byte {
 	h := c.hashFunction()
-	h.Write(data)
+	_, err := h.Write(data)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return h.Sum(nil)
 }
 
